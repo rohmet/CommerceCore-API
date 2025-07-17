@@ -65,3 +65,14 @@ exports.updateProduct = asyncHandler(async (req, res) => {
   const updatedProduct = await product.save();
   res.status(200).json(updatedProduct);
 });
+
+// Delete - hapus produk berdasarkan ID
+exports.deleteProduct = asyncHandler(async (req, res) => {
+  const product = await Post.findById(req.params.id);
+  if (!product) {
+    res.status(404);
+    throw new Error('Produk tidak ditemukan');
+  }
+  await product.deleteOne();
+  res.status(200).json({ message: 'Produk berhasil dihapus' });
+});
