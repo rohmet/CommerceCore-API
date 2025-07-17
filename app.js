@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const productsRoutes = require('./routes/products.routes.js');
 const userRoutes = require('./routes/user.routes.js');
+const ordersRoutes = require('./routes/orders.routes.js');
 
 // 2. Inisialisasi aplikasi Express
 const app = express();
@@ -37,3 +38,5 @@ app.get('/', (req, res) => {
 app.use('/api/products', productsRoutes);
 // 7. Rute untuk pengguna
 app.use('/api/users', userRoutes);
+// 8. Rute untuk order
+app.use('/api/orders', ordersRoutes);
