@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const productsRoutes = require('./routes/products.routes.js');
+const userRoutes = require('./routes/user.routes.js');
 
 // 2. Inisialisasi aplikasi Express
 const app = express();
@@ -34,3 +35,5 @@ app.get('/', (req, res) => {
 
 // 6. Rute untuk produk
 app.use('/api/products', productsRoutes);
+// 7. Rute untuk pengguna
+app.use('/api/users', userRoutes);
