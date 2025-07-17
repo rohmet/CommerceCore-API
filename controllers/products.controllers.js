@@ -36,3 +36,13 @@ exports.getAllProducts = asyncHandler(async (req, res) => {
     totalProducts
   });
 })
+
+// Read - ambil produk berdasarkan ID
+exports.getProductById = asyncHandler(async (req, res) => {
+  const product = await Post.findById(req.params.id);
+  if (!product) {
+    res.status(404);
+    throw new Error('Produk tidak ditemukan');
+  }
+  res.status(200).json(product);
+});
