@@ -8,7 +8,7 @@ exports.createProduct = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error('Semua field wajib diisi');
   }
-  const newProduct = await Post.create({ name, description, price, stock });
+  const newProduct = await Post.create({ name, description, price, stock, user: req.user._id });
   res.status(201).json(newProduct);
 });
 
@@ -56,6 +56,12 @@ exports.updateProduct = asyncHandler(async (req, res) => {
     throw new Error('Produk tidak ditemukan');
   }
 
+  // cek apakah user yang mengupdate adalah pemilik produk
+  if (product.user.toString() !== req.user._id.toString()) {
+    res.status(403);
+    throw new Error('Anda tidak memiliki izin untuk mengupdate produk ini');
+  }
+
   // Update field yang ada di body request
   product.name = name || product.name;
   product.description = description || product.description;
@@ -73,6 +79,13 @@ exports.deleteProduct = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error('Produk tidak ditemukan');
   }
+
+  // cek apakah user yang menghapus adalah pemilik produk
+  if (product.user.toString() !== req.user._id.toString()) {
+    res.status(403);
+    throw new Error('Anda tidak memiliki izin untuk menghapus produk ini');
+  }
+  
   await product.deleteOne();
   res.status(200).json({ message: 'Produk berhasil dihapus' });
 });
