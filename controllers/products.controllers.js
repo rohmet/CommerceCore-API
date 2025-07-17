@@ -46,3 +46,22 @@ exports.getProductById = asyncHandler(async (req, res) => {
   }
   res.status(200).json(product);
 });
+
+// Update - update produk berdasarkan ID
+exports.updateProduct = asyncHandler(async (req, res) => {
+  const { name, description, price, stock } = req.body;
+  const product = await Post.findById(req.params.id);
+  if (!product) {
+    res.status(404);
+    throw new Error('Produk tidak ditemukan');
+  }
+
+  // Update field yang ada di body request
+  product.name = name || product.name;
+  product.description = description || product.description;
+  product.price = price || product.price;
+  product.stock = stock !== undefined ? stock : product.stock;
+
+  const updatedProduct = await product.save();
+  res.status(200).json(updatedProduct);
+});
