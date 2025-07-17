@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
+const productsRoutes = require('./routes/products.routes.js');
 
 // 2. Inisialisasi aplikasi Express
 const app = express();
@@ -30,3 +31,6 @@ mongoose.connect(process.env.MONGODB_URI)
 app.get('/', (req, res) => {
   res.send('Selamat datang di commerce!');
 });
+
+// 6. Rute untuk produk
+app.use('/api/products', productsRoutes);
