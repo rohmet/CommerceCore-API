@@ -11,9 +11,3 @@ exports.createProduct = asyncHandler(async (req, res) => {
   const newProduct = await Post.create({ name, description, price, stock });
   res.status(201).json(newProduct);
 });
-
-// @desc    Get all products
-// @route   GET /api/products
-// exports.getProducts = asyncHandler(async (req, res) => {
-
-// })
