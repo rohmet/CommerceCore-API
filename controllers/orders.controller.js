@@ -66,7 +66,7 @@ exports.createOrder = asyncHandler(async (req, res) => {
 });
 
 // Read - ambil semua order
-exports.getAllOrders = asyncHandler(async (req, res) => {
+exports.getMyOrders = asyncHandler(async (req, res) => {
   const orders = await Order.find({ buyer: req.user._id })
     .populate('products.productId', 'name price stock')
     .sort({ createdAt: -1 });
