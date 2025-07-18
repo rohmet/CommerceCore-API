@@ -65,7 +65,7 @@ exports.createOrder = asyncHandler(async (req, res) => {
   }
 });
 
-// Read - ambil semua order
+// Read - ambil semua order pengguna
 exports.getMyOrders = asyncHandler(async (req, res) => {
   const orders = await Order.find({ buyer: req.user._id })
     .populate('products.productId', 'name price stock')
@@ -76,6 +76,21 @@ exports.getMyOrders = asyncHandler(async (req, res) => {
     throw new Error('Tidak ada order ditemukan');
   }
   
+  res.status(200).json(orders);
+
+});
+
+// Read - ambil order khusus admin
+exports.getAllOrders = asyncHandler(async (req, res) => {
+  const orders = await Order.find()
+    .populate('products.productId', 'name price stock')
+    .sort({ createdAt: -1 });
+
+  if (!orders || orders.length === 0) {
+    res.status(404);
+    throw new Error('Tidak ada order ditemukan');
+  }
+
   res.status(200).json(orders);
 
 });
