@@ -94,3 +94,33 @@ exports.getAllOrders = asyncHandler(async (req, res) => {
   res.status(200).json(orders);
 
 });
+
+// Update - update status order (hanya untuk admin)
+exports.updateOrderStatus = asyncHandler(async (req, res) => {
+  const { orderId, status } = req.body;
+
+  if (!orderId || !status) {
+    res.status(400);
+    throw new Error('Semua field wajib diisi dengan benar');
+  }
+
+  // Validasi status
+  const validStatuses = ['pending', 'paid', 'shipped', 'delivered'];
+  if (!validStatuses.includes(status)) {
+    res.status(400);
+    throw new Error('Status tidak valid');
+  }
+
+  // Temukan order berdasarkan ID
+  const order = await Order.findById(orderId);
+  if (!order) {
+    res.status(404);
+    throw new Error('Order tidak ditemukan');
+  }
+
+  // Update status order
+  order.status = status;
+  await order.save();
+
+  res.status(200).json({ message: 'Status order berhasil diperbarui', order });
+});
