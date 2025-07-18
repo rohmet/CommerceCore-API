@@ -65,3 +65,17 @@ exports.createOrder = asyncHandler(async (req, res) => {
   }
 });
 
+// Read - ambil semua order
+exports.getAllOrders = asyncHandler(async (req, res) => {
+  const orders = await Order.find({ buyer: req.user._id })
+    .populate('products.productId', 'name price stock')
+    .sort({ createdAt: -1 });
+
+  if (!orders || orders.length === 0) {
+    res.status(404);
+    throw new Error('Tidak ada order ditemukan');
+  }
+  
+  res.status(200).json(orders);
+
+});
